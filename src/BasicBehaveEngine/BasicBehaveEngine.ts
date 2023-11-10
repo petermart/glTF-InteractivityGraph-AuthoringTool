@@ -16,6 +16,7 @@ import {WhileLoop} from "./nodes/flow/WhileLoop";
 import {WorldGet} from "./nodes/world/WorldGet";
 import {WorldSet} from "./nodes/world/WorldSet";
 import {PlayAnimation} from "./nodes/world/PlayAnimation";
+import {OutputConsole} from "./nodes/experimental/OutputConsole";
 import {WorldAnimateTo} from "./nodes/world/WorldAnimateTo";
 import {Receive} from "./nodes/customEvent/Receive";
 import {Send} from "./nodes/customEvent/Send";
@@ -252,6 +253,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("world/get", WorldGet);
         this.registerBehaveEngineNode("world/set", WorldSet);
         this.registerBehaveEngineNode("world/playAnimation", PlayAnimation);
+        this.registerBehaveEngineNode("ADBE/output_console_node", OutputConsole);
         this.registerBehaveEngineNode("world/animateTo", WorldAnimateTo);
         this.registerBehaveEngineNode("math/abs", AbsoluteValue);
         this.registerBehaveEngineNode("customEvent/receive", Receive);
