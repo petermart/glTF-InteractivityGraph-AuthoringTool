@@ -235,6 +235,10 @@ export class BehaveEngineNode {
 
     protected getType(id: number): string {
         const type = this.types[id];
+        console.log(type);
+        if (type == null) {
+            return "undefined";
+        }
         let typeName: string;
         if (type.signature === "custom" && type.extensions) {
             typeName = Object.keys(type.extensions)[0]

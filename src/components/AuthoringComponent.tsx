@@ -331,7 +331,7 @@ const AddVariableComponent = (props: {closeModal: any, pushVariable: any}) => {
         if (idRef.current === null || initialValueRef.current === null || typeRef.current === null) {return}
         if (idRef.current.value === "" || initialValueRef.current.value === "" || typeRef.current.value === "") {return}
 
-        const variable: IVariable = {id: idRef.current.value, value: initialValueRef.current.value, type: typeRef.current.selectedIndex};
+        const variable: IVariable = {id: idRef.current.value, value: initialValueRef.current.value, type: typeRef.current.selectedIndex.toString()};
         props.pushVariable(variable);
         props.closeModal();
     }

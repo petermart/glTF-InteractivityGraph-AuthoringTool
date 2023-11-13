@@ -48,7 +48,7 @@ export interface ICustomEvent {
 export interface IVariable {
     id: string,
     value?: any,
-    type: number
+    type: string // should be number long term
 }
 
 export const standardTypes = [

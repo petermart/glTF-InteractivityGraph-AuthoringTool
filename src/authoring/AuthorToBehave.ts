@@ -26,11 +26,39 @@ export const authorToBehave = (nodes: Node[], edges: Edge[], customEvents: ICust
     // loop through all the nodes and embed the edge data in them to correspond to the behave graph spec
     nodes.forEach((node) => {
         if (node.type === undefined) return;
-
+        const typeAsIntFromType = (oldType: string) => {
+            if (oldType == undefined) {
+                //return undefined;
+            }
+            let typeAsInt = 0;
+            if (/^\d+$/.test(oldType)) {
+                typeAsInt = parseInt(oldType);
+            }
+            else {
+                if (node.data.types == undefined) {
+                    node.data.types = standardTypes;
+                }
+    
+                for (let i = 0; i < node.data.types.length; i++) {
+                    if (node.data.types[i].signature == oldType) {
+                        typeAsInt = i;
+                        console.log(typeAsInt);
+                        return typeAsInt;
+                    } else {
+                        console.log(`${node.data.types[i].signature} does not equal ${oldType}}`);
+                    }
+                } 
+                console.log(node.data.types);
+                throw (`type not found hehe ${oldType}`);
+            }
+            //if (type == 'lifecycle/onTick')
+            return typeAsInt;
+        }
+    
         //create behave node
         const behaveNode: any = {
             id: node.id,
-            type: node.type,
+            type: (node.type),
             values: [],
             configuration: [],
             flows: [],
@@ -41,11 +69,20 @@ export const authorToBehave = (nodes: Node[], edges: Edge[], customEvents: ICust
         };
 
         const nodeSpec = authoringNodeSpecs.find((nodeSpec: IAuthoringNode) => nodeSpec.type === node.type)!
+        if (nodeSpec == undefined) {
+            console.log(`Cannot find ${node.type}`);
+            throw(`Cannot find ${node.type}`)
+        }
 
         // embed configuration
         if (node.data.configuration !== undefined) {
             Object.entries(node.data.configuration).forEach(([key, value]) => {
+                console.log(`${key}: ${value}`);
                 const configEntry = nodeSpec.configuration.find(config => config.id === key);
+                if (configEntry == undefined) {
+                    console.log(node);
+                    throw (`Cannot find config entry ${key} for ${node.type}. Configuration path: ${node}`);
+                }
                 const configVal = castParameter(value, configEntry!.type);
                 behaveNode.configuration.push({id: key, value: configVal})
             });
@@ -68,7 +105,7 @@ export const authorToBehave = (nodes: Node[], edges: Edge[], customEvents: ICust
                     } else {
                         const allowedTypes = nodeSpecParam!.types
                         if (!isNaN((val as any).type)) {
-                            typeIndex = (val as any).type
+                            typeIndex = ((val as any).type);
                         } else {
                             const valType = (val as any).type ?? allowedTypes[0];
                             typeIndex = graph.types.findIndex((typeItem: any) => {
@@ -78,8 +115,14 @@ export const authorToBehave = (nodes: Node[], edges: Edge[], customEvents: ICust
                         }
                     }
                 }
+                typeIndex = typeAsIntFromType(typeIndex);
 
                 let typename;
+                console.log("node data types");
+                console.log(node.data.types);
+                console.log(typeIndex);
+                console.log(node.data.types);
+                console.log(typeIndex);
                 if (node.data.types[typeIndex].signature === "custom" && node.data.types[typeIndex].extensions) {
                     typename = Object.keys(node.data.types[typeIndex].extensions)[0]
                 } else {
@@ -112,7 +155,13 @@ export const authorToBehave = (nodes: Node[], edges: Edge[], customEvents: ICust
             .forEach((edge) => {
                 // look up the target in flows to determine if this edge corresponds to one of them
                 const targetNode = nodes.find(node => node.id === edge.target);
-                const inFlows = authoringNodeSpecs.find((nodeSpec: IAuthoringNode) => nodeSpec.type === targetNode!.type)!.input.flows.map((flow: IFlowSocketDescriptor) => flow.id)
+                console.log(targetNode);
+                console.log(`${targetNode==undefined}`)
+                console.log(targetNode!.type);
+                const spec = authoringNodeSpecs.find((nodeSpec: IAuthoringNode) => nodeSpec.type === targetNode!.type);
+                console.log(authoringNodeSpecs);
+                console.log(spec);
+                const inFlows = spec!.input.flows.map((flow: IFlowSocketDescriptor) => flow.id)
                 if (inFlows.includes(edge.targetHandle!) || targetNode!.type === "flow/waitAll") {
                     behaveNode.flows.push({id: edge.sourceHandle, node: edge.target, socket: edge.targetHandle})
                 }

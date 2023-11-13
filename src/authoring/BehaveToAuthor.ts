@@ -1,6 +1,6 @@
 import { Edge, Node } from "reactflow";
 import { v4 as uuidv4 } from "uuid";
-import {ICustomEvent, IVariable} from "./AuthoringNodeSpecs";
+import {ICustomEvent, IVariable, standardTypes} from "./AuthoringNodeSpecs";
 
 /**
  * Converts a Behave graph represented as a JSON string into ReactFlow-compatible data structures.
@@ -9,11 +9,18 @@ import {ICustomEvent, IVariable} from "./AuthoringNodeSpecs";
  * @returns An array containing ReactFlow nodes, edges, custom events, and variables.
  */
 export const behaveToAuthor = (graph: string): [Node[], Edge[], ICustomEvent[], IVariable[]] => {
-  const graphJson = JSON.parse(graph);
+  const graphJson = JSON.parse(graph.replace(/":[ \t](Infinity|-IsNaN)/g, '":"{{$1}}"'), function(k, v) {
+    if (v === '{{Infinity}}') return Infinity;
+    else if (v === '{{-Infinity}}') return -Infinity;
+    else if (v === '{{NaN}}') return NaN;
+    return v;
+    });
+ 
+  //const graphJson = JSON.parse(graph);
   const nodes: Node[] = [];
   const edges: Edge[] = [];
-  const customEvents: ICustomEvent[] = graphJson.customEvents;
-  const variables: IVariable[] = graphJson.variables;
+  const customEvents: ICustomEvent[] = graphJson.customEvents || [];
+  const variables: IVariable[] = graphJson.variables || [];
 
   // loop through all the nodes in our behave graph to extract nodes and edges
   let id = 0;
@@ -46,6 +53,9 @@ export const behaveToAuthor = (graph: string): [Node[], Edge[], ICustomEvent[], 
     node.data.customEvents = graphJson.customEvents;
     node.data.variables = graphJson.variables;
     node.data.types = graphJson.types;
+    if (node.data.types == undefined) {
+      node.data.types = standardTypes;
+    }
 
     // to keep track of if there is a link for this value
     node.data.linked = {}

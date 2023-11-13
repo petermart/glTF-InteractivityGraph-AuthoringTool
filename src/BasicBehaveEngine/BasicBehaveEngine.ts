@@ -63,6 +63,7 @@ import {LessThan} from "./nodes/math/comparison/LessThan";
 import {Equality} from "./nodes/math/comparison/Equality";
 import {GreaterThanOrEqualTo} from "./nodes/math/comparison/GreaterThanOrEqualTo";
 import {GreaterThan} from "./nodes/math/comparison/GreaterThan";
+import { standardTypes } from "../authoring/AuthoringNodeSpecs";
 
 
 export interface ICustomEventListener {
@@ -178,6 +179,9 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.variables = behaveGraph.variables;
         this.customEvents = behaveGraph.customEvents;
         this.types = behaveGraph.types;
+        /*if (behaveGraph.types == undefined) {
+            this.types = standardTypes;
+        }*/
 
         const defaultProps = {
             idToBehaviourNodeMap: this.idToBehaviourNodeMap,

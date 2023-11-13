@@ -7,7 +7,8 @@ import {
     IFlowSocketDescriptor,
     IAuthoringNode,
     IValueSocketDescriptor, IVariable,
-    authoringNodeSpecs
+    authoringNodeSpecs,
+    standardTypes
 } from "./AuthoringNodeSpecs";
 import {RenderIf} from "../components/RenderIf";
 
@@ -78,6 +79,32 @@ export const AuthoringGraphNode = (props: IAuthoringGraphNodeProps) => {
         return keys;
     }
 
+    const typeAsIntFromType = (type: string) => {
+        if (type == undefined) {
+            //return undefined;
+        }
+        let typeAsInt : number | undefined = undefined;
+        if (/^\d+$/.test(type)) {
+            typeAsInt = parseInt(type);
+        }
+        else {
+            if (props.data.types == undefined) {
+                props.data.types = standardTypes;
+            }
+            console.log(props.data.types);
+            for (let i = 0; i < props.data.types.length; i++) {
+                console.log(i);
+                if (props.data.types[i].signature == type || (props.data.types[i].signature == 'custom' && Object.prototype.hasOwnProperty.call(props.data.types[i].extensions, type))) {
+                    typeAsInt = i;
+                    return typeAsInt;
+                    break;
+                }
+            }
+            return 0; // THis is bad practice peter!
+            throw (`type not found ${type}`);
+        }
+        return typeAsInt;
+    }
 
     const evaluateConfigurationWhichChangeSockets = () => {
         const nodeSpec: IAuthoringNode | undefined = authoringNodeSpecs.find(nodeSpec => nodeSpec.type === props.node.type);
@@ -164,7 +191,10 @@ export const AuthoringGraphNode = (props: IAuthoringGraphNodeProps) => {
         } else if (props.data.configuration.variable !== undefined) {
             const variableId: number = JSON.parse(props.data.configuration.variable);
             const v: IVariable = props.data.variables[variableId];
-            const value: IValueSocketDescriptor = {id: v.id, types: [props.data.types[v.type].signature], value: v.value, description: 'Value Socket for this variable'}
+            const type: string = v.type;
+
+            const typeAsInt = typeAsIntFromType(type);
+            const value: IValueSocketDescriptor = {id: v.id, types: [props.data.types[typeAsInt].signature], value: v.value, description: 'Value Socket for this variable'}
 
             if (props.node.type === "variable/set") {
                 setInputValues([value]);
@@ -196,6 +226,12 @@ export const AuthoringGraphNode = (props: IAuthoringGraphNodeProps) => {
         }
     }
 
+    let typeAsInt = 0;
+    let t = 0;
+    const logger = (log:any) => {
+        console.log(log);
+        return 0;
+    };
     return (
         <div className={"flow-node"}>
             <div style={{background: getHeaderColor(props.node.type), padding: 16, marginBottom: 8}}>
@@ -257,12 +293,20 @@ export const AuthoringGraphNode = (props: IAuthoringGraphNodeProps) => {
                     <div className={"flow-node-row"}>
                         {/*inputValues*/}
                         <div>
+                            {t = logger(props.node.type)}
+                            {t = logger(inputValues)}
                             {inputValues.map(socket => {
                                 return (
                                     <div key={socket.id} className={"flow-node-socket"}>
+                                        {t = logger("Logging")}
+                                        {t = logger(socket)}
+                                        {t = logger(socket.id)}
+                                        {t = logger(props.data.values[socket.id])}
                                         <label htmlFor={socket.id}>{socket.id}</label>
                                         <input id={`in-${socket.id}`} name={socket.id} onChange={onChangeParameter} defaultValue={props.data.values[socket.id]?.value} style={{display: props.data.linked && props.data.linked[socket.id] ? "none" : "block"}}/>
-                                        <select id={`${socket.id}-typeDropDown`} onChange={onChangeType} defaultValue={props.data.types[props.data.values[socket.id]?.type]?.signature} style={{display: props.data.linked && props.data.linked[socket.id] ? "none" : "block"}}>
+                                        {/* we believe this is failing since socket.id for variable is invalid! console.log(socket)*/}
+                                        {typeAsInt = typeAsIntFromType(props.data.values[socket.id]?.type) }
+                                        <select id={`${socket.id}-typeDropDown`} onChange={onChangeType} defaultValue={props.data.types[typeAsInt]?.signature} style={{display: props.data.linked && props.data.linked[socket.id] ? "none" : "block"}}>
                                             {socket.types.map((type, index) => (
                                                 <option key={index} value={type}>
                                                     {type}
