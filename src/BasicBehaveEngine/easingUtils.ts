@@ -12,11 +12,17 @@ import {Quaternion} from "@babylonjs/core";
 export const easeFloat = (t: number, initialVal: number, targetVal: number, type: string): number => {
     if (type === "linear") {
         return initialVal + (targetVal - initialVal) * t;
+    } else if (type === "in") {
+        return initialVal + (targetVal - initialVal) * t * t;
+    } else if (type === "out") {
+        return initialVal + (targetVal - initialVal) * t * (2 - t);
+    } else if (type === "inOut") {
+        return initialVal + (targetVal - initialVal) * ((t < 0.5) ? 2 * t * t : -1 + (4 - 2 * t) * t);
     } else {
         // default to immediate
         return targetVal;
     }
-}
+};
 
 /**
  * Eases an array of three floating-point values from their initial values to their target values over time.

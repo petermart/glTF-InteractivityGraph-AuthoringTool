@@ -269,6 +269,45 @@ export const worldNodeSpecs: IAuthoringNode[] = [
                 }
             ]
         }
+    },
+    {
+        type: "ADBE/output_console_node",
+        description: "Print out",
+        configuration: [],
+        input: {
+            flows: [
+                {
+                    id: "in",
+                    description: "The entry flow into this node.",
+                }
+            ],
+            values: [
+                {
+                    id: "message",
+                    description: "First Argument",
+                    types: [
+                        "AMZN_interactivity_string"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [
+                {
+                    id: "out",
+                    description: "The flow to be followed after the delay",
+                }
+            ],
+            values: [
+                {
+                    id: "val",
+                    description: "True if >= else false",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
     }
 ]
 

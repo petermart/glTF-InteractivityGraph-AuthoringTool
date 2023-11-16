@@ -62,7 +62,7 @@ import {Equality} from "./nodes/math/comparison/Equality";
 import {GreaterThanOrEqualTo} from "./nodes/math/comparison/GreaterThanOrEqualTo";
 import {GreaterThan} from "./nodes/math/comparison/GreaterThan";
 import {Inf} from "./nodes/math/constants/Inf";
-
+import {OutputConsole} from "./nodes/experimental/OutputConsole";
 
 export interface ICustomEventListener {
     type: string,
@@ -243,6 +243,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("world/get", WorldGet);
         this.registerBehaveEngineNode("world/set", WorldSet);
         this.registerBehaveEngineNode("world/animateTo", WorldAnimateTo);
+        this.registerBehaveEngineNode("ADBE/output_console_node", OutputConsole);
         this.registerBehaveEngineNode("math/abs", AbsoluteValue);
         this.registerBehaveEngineNode("customEvent/receive", Receive);
         this.registerBehaveEngineNode("customEvent/send", Send);
