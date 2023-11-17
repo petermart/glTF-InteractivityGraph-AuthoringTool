@@ -122,6 +122,17 @@ export class BabylonDecorator extends ADecorator {
             const parts: string[] = path.split("/");
             (this.world.glTFNodes[Number(parts[1])] as AbstractMesh).rotationQuaternion = new Quaternion(value[1], value[2], value[3], value[0]);
         }, "float4")
+
+        this.registerJsonPointer(`nodes/${maxGltfNode}/extensions/KHR_visibility/visible`, (path) => {
+            const parts: string[] = path.split("/");
+            return [
+                (this.world.glTFNodes[Number(parts[1])] as AbstractMesh).isEnabled];
+        }, (path, value) => {
+            const parts: string[] = path.split("/");
+            this.world.glTFNodes[Number(parts[1])].setEnabled(value);
+        }, "bool");
+
+
     }
 
     public extractBehaveGraphFromScene = (): any => {

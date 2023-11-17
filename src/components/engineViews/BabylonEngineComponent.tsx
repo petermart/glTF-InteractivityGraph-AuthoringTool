@@ -15,6 +15,9 @@ import {Scene} from "@babylonjs/core/scene";
 import "@babylonjs/loaders/glTF";
 import {Spacer} from "../Spacer";
 import {KHR_interactivity, KHR_INTERACTIVITY_EXTENSION_NAME} from "../../loaderExtensions/KHR_interactivity";
+import {KHR_audio, KHR_AUDIO_EXTENSION_NAME} from "../../loaderExtensions/KHR_audio";
+import {KHR_visibility, KHR_VISIBILITY_EXTENSION_NAME} from "../../loaderExtensions/KHR_visibility";
+
 import {GLTFLoader} from "@babylonjs/loaders/glTF/2.0";
 import {BabylonDecorator} from "../../BasicBehaveEngine/decorators/BabylonDecorator";
 import {BasicBehaveEngine} from "../../BasicBehaveEngine/BasicBehaveEngine";
@@ -27,6 +30,15 @@ enum BabylonEngineModal {
 GLTFLoader.RegisterExtension(KHR_INTERACTIVITY_EXTENSION_NAME, (loader) => {
     return new KHR_interactivity(loader);
 });
+
+GLTFLoader.RegisterExtension(KHR_AUDIO_EXTENSION_NAME, (loader) => {
+    return new KHR_audio(loader);
+});
+
+GLTFLoader.RegisterExtension(KHR_VISIBILITY_EXTENSION_NAME, (loader) => {
+    return new KHR_visibility(loader);
+});
+
 
 export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGraphFromGlTF: any}) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -92,6 +104,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
                 ( loader as GLTFFileLoader ).animationStartMode = GLTFLoaderAnimationStartMode.NONE;
             }
         });
+
         const container = await SceneLoader.LoadAssetContainerAsync("", url, sceneRef.current, undefined, ".glb");
         container.addAllToScene();
 
@@ -110,6 +123,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
                 if (!seenNodeIndices.has(nodeIndex)) {
                     seenNodeIndices.add(nodeIndex);
                     node.metadata.nodeIndex = nodeIndex;
+                    //node.metadata.extensions = node._internalMetadata;
                     finalNodes.push(node);
                 }
             }
