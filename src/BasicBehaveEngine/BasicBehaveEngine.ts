@@ -28,6 +28,7 @@ import {Truncate} from "./nodes/math/arithmetic/Truncate";
 import {Floor} from "./nodes/math/arithmetic/Floor";
 import {Ceil} from "./nodes/math/arithmetic/Ceil";
 import {Negate} from "./nodes/math/arithmetic/Negate";
+import {Cast} from "./nodes/math/arithmetic/Cast";
 import {Add} from "./nodes/math/arithmetic/Add";
 import {Subtract} from "./nodes/math/arithmetic/Subtract";
 import {Multiply} from "./nodes/math/arithmetic/Multiply";
@@ -258,6 +259,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/ceil", Ceil);
         this.registerBehaveEngineNode("math/neg", Negate);
         this.registerBehaveEngineNode("math/add", Add);
+        this.registerBehaveEngineNode("math/cast", Cast);
         this.registerBehaveEngineNode("math/sub", Subtract);
         this.registerBehaveEngineNode("math/mul", Multiply);
         this.registerBehaveEngineNode("math/div", Divide);

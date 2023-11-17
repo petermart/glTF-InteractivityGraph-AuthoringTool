@@ -1074,6 +1074,45 @@ export const constantsNodes = [
 
 export const arithmeticNodes = [
     {
+        type: "math/cast",
+        description: "Cast operation",
+        configuration: [
+            {
+                id: "castType",
+                description: "The string type name of what to cast to",
+                type: "string"
+            },
+        ],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "First Addend",
+                    types: [
+                        "float",
+                        "int",
+                        "bool"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "val",
+                    description: "cast",
+                    types: [
+                        "float",
+                        "int",
+                        "bool"
+                    ]
+                }
+            ]
+        }
+    },
+    {
         type: "math/abs",
         description: "Absolute value operation",
         configuration: [],
