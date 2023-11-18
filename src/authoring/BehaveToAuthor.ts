@@ -16,25 +16,33 @@ export const behaveToAuthor = (graph: string): [Node[], Edge[], ICustomEvent[], 
     else if (v === '{{NaN}}') return NaN;
     return v;
     });
-  const nodes: Node[] = [];
+  let nodes: Node[] = [];
   const edges: Edge[] = [];
   const customEvents: ICustomEvent[] = graphJson.customEvents || [];
   const variables: IVariable[] = graphJson.variables || [];
 
   // loop through all the nodes in our behave graph to extract nodes and edges
   let id = 0;
+  let needsReflow = true;
   graphJson.nodes.forEach((nodeJSON: any) => {
+    
     // construct and add the node to the nodes list
+    const x = nodeJSON.metadata?.positionX
+    ? Number(nodeJSON.metadata?.positionX)
+    : 0;
+    const y = nodeJSON.metadata?.positionY
+    ? Number(nodeJSON.metadata?.positionY)
+    : 0;
+    if (x + y != 0) {
+      needsReflow = false;
+    }
+
     const node: Node = {
       id: String(id),
       type: nodeJSON.type,
       position: {
-        x: nodeJSON.metadata?.positionX
-          ? Number(nodeJSON.metadata?.positionX)
-          : 0,
-        y: nodeJSON.metadata?.positionY
-          ? Number(nodeJSON.metadata?.positionY)
-          : 0,
+        x: x,
+        y: y,
       },
       data: {} as { [key: string]: any },
     };
@@ -90,6 +98,76 @@ export const behaveToAuthor = (graph: string): [Node[], Edge[], ICustomEvent[], 
 
     id++;
   });
+
+  if (needsReflow) {
+    const setComplexLayout = (nodes: Array<Node>, edges: Array<any>) => {
+      const adjacencyList: Record<string, string[]> = {};
+  
+      // Build adjacency list
+      edges.forEach((edge) => {
+        const { source, target } = edge;
+        if (!adjacencyList[source]) {
+          adjacencyList[source] = [];
+        }
+        if (!adjacencyList[target]) {
+          adjacencyList[target] = [];
+        }
+        adjacencyList[source].push(target);
+        adjacencyList[target].push(source);
+      });
+  
+      const visited: Record<string, boolean> = {};
+      const rows: string[][] = [];
+      const queue: string[] = [];
+  
+      // Traverse graph and assign rows
+      nodes.forEach((node) => {
+        const { id } = node;
+        if (!visited[id]) {
+          visited[id] = true;
+          const row: string[] = [];
+          queue.push(id);
+  
+          while (queue.length > 0) {
+            const currentNode = queue.shift() as string;
+            row.push(currentNode);
+  
+            if (adjacencyList[currentNode]) {
+              adjacencyList[currentNode].forEach((neighbor) => {
+                if (!visited[neighbor]) {
+                  visited[neighbor] = true;
+                  queue.push(neighbor);
+                }
+              });  
+            }
+          }
+  
+          rows.push(row);
+        }
+      });
+  
+      // Calculate positions based on rows
+      const horizontalSpacing = 3*150;
+      const verticalSpacing = 4*100;
+
+      const elements: Array<Node> = [];
+  
+      rows.forEach((row, rowIndex) => {
+        row.forEach((nodeId, nodeIndex) => {
+          const node = nodes.find((n) => n.id === nodeId);
+          if (node) {
+            const x = nodeIndex * horizontalSpacing;
+            const y = rowIndex * verticalSpacing;
+            elements.push({ ...node, position: { x, y } });
+          }
+        });
+      });
+  
+      return elements;
+    };
+  
+    nodes = setComplexLayout(nodes,edges);
+  }
 
   return [nodes, edges, customEvents, variables];
 };
