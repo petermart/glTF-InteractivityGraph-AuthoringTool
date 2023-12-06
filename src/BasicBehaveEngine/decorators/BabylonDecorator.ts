@@ -8,6 +8,7 @@ import {Scene} from "@babylonjs/core/scene";
 import {OnSelect} from "../nodes/experimental/OnSelect";
 import {WorldStopAnimation} from "../nodes/experimental/WorldStopAnimation";
 import {WorldStartAnimation} from "../nodes/experimental/WorldStartAnimation";
+import {WorldPlaySound} from "../nodes/experimental/WorldPlaySound";
 
 export class BabylonDecorator extends ADecorator {
     scene: Scene;
@@ -44,6 +45,7 @@ export class BabylonDecorator extends ADecorator {
         this.registerBehaveEngineNode("node/OnSelect", OnSelect);
         this.registerBehaveEngineNode("world/stopAnimation", WorldStopAnimation);
         this.registerBehaveEngineNode("world/startAnimation", WorldStartAnimation);
+        this.registerBehaveEngineNode("async/playSound", WorldPlaySound);
     }
 
     processAddingNodeToQueue = (flow: IFlow) => {
@@ -107,7 +109,6 @@ export class BabylonDecorator extends ADecorator {
                 (this.world.glTFNodes[Number(parts[1])] as AbstractMesh).position.z];
         }, (path, value) => {
             const parts: string[] = path.split("/");
-            console.log(value);
             (this.world.glTFNodes[Number(parts[1])] as AbstractMesh).position= new Vector3(value[0], value[1], value[2]);
         }, "float3")
 

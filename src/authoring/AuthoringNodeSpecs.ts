@@ -271,6 +271,39 @@ export const worldNodeSpecs: IAuthoringNode[] = [
         }
     },
     {
+        type: "async/playSound",
+        description: "plays a sound",
+        configuration: [],
+        input: {
+            values: [
+                {
+                    id: "sound",
+                    types: ["int"],
+                    description: "The index of an emitter to play"
+                }
+            ],
+            flows: [
+                {
+                    id: "in",
+                    description: "in flow to trigger this node"
+                }
+            ]
+        },
+        output: {
+            values: [],
+            flows: [
+                {
+                    id: "out",
+                    description: "The synchronous flow to be followed"
+                },
+                {
+                    id: "done",
+                    description: "The flow to be followed when the animation target time is reached, async"
+                }
+            ]
+        }
+    },
+    {
         type: "ADBE/output_console_node",
         description: "Print out",
         configuration: [],
