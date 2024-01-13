@@ -1125,7 +1125,10 @@ export const arithmeticNodes = [
                     types: [
                         "float",
                         "int",
-                        "bool"
+                        "bool",
+                        "float3",
+                        "float4",
+                        "float4x4"
                     ]
                 }
             ]
@@ -2462,6 +2465,121 @@ export const exponentialFunctionNodes = [
 ]
 
 export const vectorNodes: IAuthoringNode[] = [
+    {
+        type: "math/compose",
+        description: "Compose a 4x4 matrix from translation rotation and scale",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "translation",
+                    description: "The translation value of a matrix represented as X/Y/Z.",
+                    types: [
+                        "float3"
+                    ]
+                },
+                {
+                    id: "rotation",
+                    description: "The rotation value represented as a quaternion",
+                    types: [
+                        "float4"
+                    ]
+                },
+                {
+                    id: "scale",
+                    description: "The scale value of a matrix represented as X/Y/Z.",
+                    types: [
+                        "float3"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "val",
+                    description: "Composed matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "math/decompose",
+        description: "Decomposed 4x4 matrix into translation rotation and scale",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "translation",
+                    description: "The output translation (x/y/z)",
+                    types: [
+                        "float3"
+                    ]
+                },
+                {
+                    id: "rotation",
+                    description: "The output rotation represented as a quaternion",
+                    types: [
+                        "float4"
+                    ]
+                },
+                {
+                    id: "scale",
+                    description: "The output scale (x/y/z)",
+                    types: [
+                        "float3"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "math/inverse",
+        description: "The matrix inverse",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input Matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "val",
+                    description: "Output Matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                }
+            ]
+        }
+    },
     {
         type: "math/length",
         description: "Vector Length",

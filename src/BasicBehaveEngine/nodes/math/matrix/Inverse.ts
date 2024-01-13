@@ -1,7 +1,7 @@
 import {BehaveEngineNode, IBehaviourNodeProps} from "../../../BehaveEngineNode";
 import {MatrixHelper} from "../matrix/MatrixHelper";
 
-export class Normalize extends BehaveEngineNode {
+export class Inverse extends BehaveEngineNode {
     REQUIRED_VALUES = [{id:"a"}]
 
     constructor(props: IBehaviourNodeProps) {
@@ -27,13 +27,8 @@ export class Normalize extends BehaveEngineNode {
                     a[2]/length,
                 ];
                 break;
-            case "float4":
             case "float4x4":
-                const magnitude = MatrixHelper.magnitude(a);
-                val = a;
-                for (let i = 0; i < val.size; i ++) {
-                    val[i] = val[i]/magnitude;
-                }
+                val = MatrixHelper.invert4x4(a);
                 break;
             default:
                 throw Error("Invalid type")

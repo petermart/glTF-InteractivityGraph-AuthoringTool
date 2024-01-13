@@ -211,9 +211,14 @@ export class BehaveEngineNode {
             } else {
                 //this node has not been evaluated yet, so we need to process it in order to get the output
                 const dependentValue = dependentNode.processNode();
-                typeIndex = dependentValue.type
-                valueToReturn = dependentValue.value
-                this.values[val.id] = {...this.values[val.id], type: dependentValue.type};
+                if (dependentValue.type != null) {
+                    typeIndex = dependentValue.type
+                    valueToReturn = dependentValue.value
+                } else {
+                    valueToReturn = dependentNode.outValues[val.socket!].value;
+                    typeIndex = dependentNode.outValues[val.socket!].type;    
+                }
+                this.values[val.id] = {...this.values[val.id], type: typeIndex};
             }
             this.graphEngine.addEntryToValueEvaluationCache(`${val.node}-${val.socket}`, {id: val.socket!, value: valueToReturn, type: typeIndex});
             return valueToReturn;

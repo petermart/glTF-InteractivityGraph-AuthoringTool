@@ -53,6 +53,9 @@ import {SquareRoot} from "./nodes/math/exponential/SquareRoot";
 import {CubeRoot} from "./nodes/math/exponential/CubeRoot";
 import {Random} from "./nodes/experimental/Random";
 import {Dot} from "./nodes/math/vector/Dot";
+import {Compose} from "./nodes/math/matrix/Compose";
+import {Decompose} from "./nodes/math/matrix/Decompose";
+import {Inverse} from "./nodes/math/matrix/Inverse";
 import {Rotate2D} from "./nodes/math/vector/Rotate2D";
 import {Rotate3D} from "./nodes/math/vector/Rotate3D";
 import {IsInfNode} from "./nodes/math/specialFloatingPoint/IsInfNode";
@@ -288,6 +291,10 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/ge", GreaterThanOrEqualTo);
         this.registerBehaveEngineNode("math/gt", GreaterThan);
         this.registerBehaveEngineNode("math/dot", Dot);
+        this.registerBehaveEngineNode("math/inverse", Inverse);
+        this.registerBehaveEngineNode("math/compose", Compose);
+        this.registerBehaveEngineNode("math/decompose", Decompose);
+
         this.registerBehaveEngineNode("math/rotate2d", Rotate2D);
         this.registerBehaveEngineNode("math/rotate3d", Rotate3D);
         this.registerBehaveEngineNode("math/isinf", IsInfNode);

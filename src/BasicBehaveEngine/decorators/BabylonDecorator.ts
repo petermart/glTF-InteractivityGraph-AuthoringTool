@@ -133,7 +133,41 @@ export class BabylonDecorator extends ADecorator {
             this.world.glTFNodes[Number(parts[1])].setEnabled(value);
         }, "bool");
 
+        this.registerJsonPointer(`nodes/${maxGltfNode}/matrix`, (path) => {
+            const parts: string[] = path.split("/");
+            const mesh = (this.world.glTFNodes[Number(parts[1])] as AbstractMesh)
+            const parent = mesh.parent;
+            let localMatrix : Matrix;
+            if (parent == null) {
+                localMatrix = mesh.getWorldMatrix();
+            }
+            else {
+                // local of A = global of A
 
+                // global of B = local of B * local of A
+                // global of C = local of C * local of B * local of A
+                // global of C = local of C * global of B
+                // global of C * global of B inverse = local of C
+
+                // gpt math:
+                //localMatrix = parent.getWorldMatrix().invert().multiply(mesh.getWorldMatrix());
+                // my math:
+                localMatrix = mesh.getWorldMatrix().multiply(parent.getWorldMatrix().invert());
+                // orig: 
+                // localMatrix = mesh.getWorldMatrix().invert().multiply(parent.getWorldMatrix());
+            }
+            return localMatrix.m
+        }, (path, value) => {
+            // read only
+        }, "float4x4");
+        // babylon represents nodes vertically
+        this.registerJsonPointer(`nodes/${maxGltfNode}/sceneMatrix`, (path) => {
+            const parts: string[] = path.split("/");
+
+            return (this.world.glTFNodes[Number(parts[1])] as AbstractMesh).getWorldMatrix().m;
+        }, (path, value) => {
+            // read only
+        }, "float4x4");
     }
 
     public extractBehaveGraphFromScene = (): any => {
