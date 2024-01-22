@@ -17,19 +17,20 @@ export class Normalize extends BehaveEngineNode {
         const type: string = this.getType(typeIndex);
         let val: any;
 
+        let length;
+        let magnitude;
         switch (type) {
             case "float3":
                 // eslint-disable-next-line no-case-declarations
-                const length = Math.sqrt(Math.pow(a[0], 2) + Math.pow(a[1], 2) + Math.pow(a[2], 2));
+                length = Math.sqrt(Math.pow(a[0], 2) + Math.pow(a[1], 2) + Math.pow(a[2], 2));
                 val = [
                     a[0]/length,
                     a[1]/length,
                     a[2]/length,
                 ];
                 break;
-            case "float4":
             case "float4x4":
-                const magnitude = MatrixHelper.magnitude(a);
+                magnitude = MatrixHelper.magnitude(a);
                 val = a;
                 for (let i = 0; i < val.size; i ++) {
                     val[i] = val[i]/magnitude;

@@ -16,26 +16,41 @@ export class Multiply extends BehaveEngineNode {
         const typeA: string = this.getType(typeIndexA);
         const typeIndexB = this.values['b'].type!
         const typeB: string = this.getType(typeIndexB);
-        if (typeA !== typeB) {
-            throw Error("input types not equivalent")
-        }
         let val: any;
 
-        switch (typeA) {
-            case "float":
-                val = a * b;
-                break;
-            case "float3":
+        let type = typeIndexA;
+        if (typeA !== typeB) {
+            if (typeA == 'float' && typeB == 'float3') {
                 val = [
-                    a[0] * b[0],
-                    a[1] * b[1],
-                    a[2] * b[2],
+                    a * b[0],
+                    a * b[1],
+                    a * b[2],
                 ]
-                break;
-            default:
-                throw Error("Invalid type")
+                type = typeIndexB;
+            } else if (typeA == 'float3' && typeB == 'float') {
+                val = [
+                    a[0] * b,
+                    a[1] * b,
+                    a[2] * b,
+                ]
+            }
+        } else {
+            switch (typeA) {
+                case "float":
+                    val = a * b;
+                    break;
+                case "float3":
+                    val = [
+                        a[0] * b[0],
+                        a[1] * b[1],
+                        a[2] * b[2],
+                    ]
+                    break;
+                default:
+                    throw Error("Invalid type")
+            }    
         }
 
-        return {id: "val", value: val, type: typeIndexA}
+        return {id: "val", value: val, type: type}
     }
 }

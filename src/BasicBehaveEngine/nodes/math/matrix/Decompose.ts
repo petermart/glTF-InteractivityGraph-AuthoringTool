@@ -30,7 +30,7 @@ export class Decompose extends BehaveEngineNode {
 
         //throw("oops");
         // This is probably not what we want.
-        return this.outValues;
+        return null; //this.outValues;
         //return {id: "translation", val: translation, type: this.getTypeIndex('float')}
     }
 }

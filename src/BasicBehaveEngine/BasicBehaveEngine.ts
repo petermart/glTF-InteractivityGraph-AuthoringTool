@@ -32,6 +32,7 @@ import {Cast} from "./nodes/math/arithmetic/Cast";
 import {Add} from "./nodes/math/arithmetic/Add";
 import {Subtract} from "./nodes/math/arithmetic/Subtract";
 import {Multiply} from "./nodes/math/arithmetic/Multiply";
+import {Clamp} from "./nodes/math/arithmetic/Clamp";
 import {Divide} from "./nodes/math/arithmetic/Divide";
 import {Remainder} from "./nodes/math/arithmetic/Remainder";
 import {Min} from "./nodes/math/arithmetic/Min";
@@ -53,6 +54,7 @@ import {SquareRoot} from "./nodes/math/exponential/SquareRoot";
 import {CubeRoot} from "./nodes/math/exponential/CubeRoot";
 import {Random} from "./nodes/experimental/Random";
 import {Dot} from "./nodes/math/vector/Dot";
+import {Normalize} from "./nodes/math/vector/Normalize";
 import {Compose} from "./nodes/math/matrix/Compose";
 import {Decompose} from "./nodes/math/matrix/Decompose";
 import {Inverse} from "./nodes/math/matrix/Inverse";
@@ -84,6 +86,8 @@ export class BasicBehaveEngine implements IBehaveEngine {
     private eventQueue: IEventQueueItem[];
     protected onTickNodeIndex: number;
     private lastTickTime: number;
+    private initializeTime: number;
+    private actualLastTickTime: number;
     protected nodes: any[];
     protected variables: IVariable[];
     protected customEvents: ICustomEvent[];
@@ -92,17 +96,19 @@ export class BasicBehaveEngine implements IBehaveEngine {
     protected types: any[];
     private jsonPtrTrie: JsonPtrTrie;
     private customEventListeners: ICustomEventListener[]
-    private fps: number;
+    private framesPerSecond: number;
     private valueEvaluationCache: Map<string, IValue>;
 
     constructor(fps: number) {
         this.registry = new Map<string, any>();
         this.idToBehaviourNodeMap = new Map<number, BehaveEngineNode>();
         this.jsonPtrTrie = new JsonPtrTrie();
-        this.fps = fps;
+        this.framesPerSecond = fps;
         this.valueEvaluationCache = new Map<string, IValue>();
         this.onTickNodeIndex = -1;
         this.lastTickTime = 0;
+        this.initializeTime = 0;
+        this.actualLastTickTime = 0;
         this.eventQueue = [];
         this.variables = [];
         this.customEvents = [];
@@ -127,6 +133,10 @@ export class BasicBehaveEngine implements IBehaveEngine {
 
     public registerJsonPointer = (jsonPtr: string, getterCallback: (path: string) => any, setterCallback: (path: string, value: any) => void, typeName: string): void => {
         this.jsonPtrTrie.addPath(jsonPtr, getterCallback, setterCallback, typeName);
+    }
+
+    public fps = (): number => {
+        return this.framesPerSecond;
     }
 
     public isValidJsonPtr = (jsonPtr: string): boolean => {
@@ -207,6 +217,8 @@ export class BasicBehaveEngine implements IBehaveEngine {
             this.addEventToWorkQueue(startFlow);
         } else if (this.onTickNodeIndex !== -1) {
             const tickFlow: IFlow = {node: this.onTickNodeIndex, id: "tick"}
+            this.initializeTime = Date.now();
+            this.actualLastTickTime = Date.now();
             this.addEventToWorkQueue(tickFlow)
         }
     }
@@ -262,6 +274,9 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/ceil", Ceil);
         this.registerBehaveEngineNode("math/neg", Negate);
         this.registerBehaveEngineNode("math/add", Add);
+        this.registerBehaveEngineNode("math/clamp", Clamp);
+        this.registerBehaveEngineNode("math/normalize", Normalize);
+
         this.registerBehaveEngineNode("math/cast", Cast);
         this.registerBehaveEngineNode("math/sub", Subtract);
         this.registerBehaveEngineNode("math/mul", Multiply);
@@ -347,6 +362,14 @@ export class BasicBehaveEngine implements IBehaveEngine {
     private executeNextEvent = () => {
         while (this.eventQueue.length > 0) {
             const eventToStart = this.eventQueue[0];
+            const asTickNode = eventToStart.behaveNode as OnTickNode;
+            if (asTickNode?.name == "OnTick") {
+                const timeSinceLastTicks = Date.now() - this.actualLastTickTime; 
+                const timeSinceStarts = Date.now() - this.initializeTime;
+                this.actualLastTickTime = Date.now();
+                const divisor = 250; // I thought this number should be 1000 but works better with 200 idk why
+                (asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
+            }
             eventToStart.behaveNode.processNode(eventToStart.inSocketId);
             this.eventQueue.splice(0, 1);
         }
@@ -354,11 +377,12 @@ export class BasicBehaveEngine implements IBehaveEngine {
         if (this.onTickNodeIndex !== -1) {
             const timeNow = Date.now();
             const timeSinceLastTick = timeNow - this.lastTickTime;
+            const timeSinceTickStart = timeNow - this.initializeTime;
             setTimeout(() => {
                 const tickFlow: IFlow = {node: this.onTickNodeIndex, id: "tick"}
                 this.addEventToWorkQueue(tickFlow)
                 this.lastTickTime = timeNow;
-            }, Math.max(1000 / this.fps - timeSinceLastTick,0))
+            }, Math.max(1000 / this.fps() - timeSinceLastTick,0))
         }
     }
 }

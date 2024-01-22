@@ -27,6 +27,10 @@ export abstract class ADecorator implements IBehaveEngine {
         this.behaveEngine.registerBehaveEngineNode(type, behaveEngineNode);
     }
 
+    fps = () => {
+        return 1;
+    }
+
     loadBehaveGraph = (behaveGraph: any) => {
         this.behaveEngine.loadBehaveGraph(behaveGraph);
     }
