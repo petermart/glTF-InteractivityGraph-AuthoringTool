@@ -54,9 +54,11 @@ import {SquareRoot} from "./nodes/math/exponential/SquareRoot";
 import {CubeRoot} from "./nodes/math/exponential/CubeRoot";
 import {Random} from "./nodes/experimental/Random";
 import {Dot} from "./nodes/math/vector/Dot";
+import {MatMul} from "./nodes/math/matrix/MatMul";
 import {Normalize} from "./nodes/math/vector/Normalize";
 import {Compose} from "./nodes/math/matrix/Compose";
 import {Decompose} from "./nodes/math/matrix/Decompose";
+import {BreakVector3} from "./nodes/math/vector/BreakVector3";
 import {Inverse} from "./nodes/math/matrix/Inverse";
 import {Rotate2D} from "./nodes/math/vector/Rotate2D";
 import {Rotate3D} from "./nodes/math/vector/Rotate3D";
@@ -306,10 +308,11 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/ge", GreaterThanOrEqualTo);
         this.registerBehaveEngineNode("math/gt", GreaterThan);
         this.registerBehaveEngineNode("math/dot", Dot);
+        this.registerBehaveEngineNode("math/matmul", MatMul);
         this.registerBehaveEngineNode("math/inverse", Inverse);
         this.registerBehaveEngineNode("math/compose", Compose);
         this.registerBehaveEngineNode("math/decompose", Decompose);
-
+        this.registerBehaveEngineNode("math/break_vector3", BreakVector3);
         this.registerBehaveEngineNode("math/rotate2d", Rotate2D);
         this.registerBehaveEngineNode("math/rotate3d", Rotate3D);
         this.registerBehaveEngineNode("math/isinf", IsInfNode);
@@ -364,10 +367,17 @@ export class BasicBehaveEngine implements IBehaveEngine {
             const eventToStart = this.eventQueue[0];
             const asTickNode = eventToStart.behaveNode as OnTickNode;
             if (asTickNode?.name == "OnTick") {
-                const timeSinceLastTicks = Date.now() - this.actualLastTickTime; 
-                const timeSinceStarts = Date.now() - this.initializeTime;
-                this.actualLastTickTime = Date.now();
-                const divisor = 250; // I thought this number should be 1000 but works better with 200 idk why
+                //console.log("he");
+                //console.log(asTickNode);
+                //console.log(`Actual last tick time: ${this.actualLastTickTime}`);
+                const t = Date.now();
+                const timeSinceLastTicks = 1000 / this.fps();//t - this.actualLastTickTime; 
+                const timeSinceStarts = t - this.initializeTime;
+                this.actualLastTickTime = t;
+                
+                //console.log(`Time since last tick last tick time: ${timeSinceLastTicks}`);
+
+                const divisor = 1000; // I thought this number should be 1000 but works better with 200 idk why
                 (asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
             }
             eventToStart.behaveNode.processNode(eventToStart.inSocketId);

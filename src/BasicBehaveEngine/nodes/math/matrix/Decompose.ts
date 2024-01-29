@@ -6,7 +6,7 @@ export class Decompose extends BehaveEngineNode {
 
     constructor(props: IBehaviourNodeProps) {
         super(props);
-        this.name = "DotNode";
+        this.name = "DecomposeNode";
         this.validateValues(this.values);
     }
 

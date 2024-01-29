@@ -2592,6 +2592,78 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
+        type: "math/break_vector3",
+        description: "Break a vector 3 into an x y and z",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input vector",
+                    types: [
+                        "float3"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "x",
+                    description: "The first scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "y",
+                    description: "The second scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "z",
+                    description: "The third scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "math/inverse",
+        description: "The matrix inverse",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input Matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "val",
+                    description: "Output Matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                }
+            ]
+        }
+    },
+    {
         type: "math/length",
         description: "Vector Length",
         configuration: [],
@@ -2752,6 +2824,42 @@ export const vectorNodes: IAuthoringNode[] = [
                     description: "Rotated vector",
                     types: [
                         "float2"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "math/matmul",
+        description: "Matrix multiplication Product",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "First Matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                },
+                {
+                    id: "b",
+                    description: "Second Matrix",
+                    types: [
+                        "float4x4"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "val",
+                    description: "Matrix multiplication product",
+                    types: [
+                        "float4x4"
                     ]
                 }
             ]
