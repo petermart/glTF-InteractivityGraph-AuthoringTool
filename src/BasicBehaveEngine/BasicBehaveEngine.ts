@@ -371,7 +371,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
                 //console.log(asTickNode);
                 //console.log(`Actual last tick time: ${this.actualLastTickTime}`);
                 const t = Date.now();
-                const timeSinceLastTicks = 1000 / this.fps();//t - this.actualLastTickTime; 
+                const timeSinceLastTicks = t - this.actualLastTickTime;// 1000 / this.fps();//
                 const timeSinceStarts = t - this.initializeTime;
                 this.actualLastTickTime = t;
                 
