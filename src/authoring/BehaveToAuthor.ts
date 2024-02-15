@@ -9,40 +9,31 @@ import {ICustomEvent, IVariable} from "./AuthoringNodeSpecs";
  * @returns An array containing ReactFlow nodes, edges, custom events, and variables.
  */
 export const behaveToAuthor = (graph: string): [Node[], Edge[], ICustomEvent[], IVariable[]] => {
-  //const graphJson = JSON.parse(graph);
+  // Handle infinite and nan cases.
   const graphJson = JSON.parse(graph.replace(/":[ \t](Infinity|-IsNaN)/g, '":"{{$1}}"'), function(k, v) {
     if (v === '{{Infinity}}') return Infinity;
     else if (v === '{{-Infinity}}') return -Infinity;
     else if (v === '{{NaN}}') return NaN;
     return v;
-    });
-  let nodes: Node[] = [];
+  });  const nodes: Node[] = [];
   const edges: Edge[] = [];
   const customEvents: ICustomEvent[] = graphJson.customEvents || [];
   const variables: IVariable[] = graphJson.variables || [];
-
+  
   // loop through all the nodes in our behave graph to extract nodes and edges
   let id = 0;
-  let needsReflow = true;
   graphJson.nodes.forEach((nodeJSON: any) => {
-    
     // construct and add the node to the nodes list
-    const x = nodeJSON.metadata?.positionX
-    ? Number(nodeJSON.metadata?.positionX)
-    : 0;
-    const y = nodeJSON.metadata?.positionY
-    ? Number(nodeJSON.metadata?.positionY)
-    : 0;
-    if (x + y != 0) {
-      needsReflow = false;
-    }
-
     const node: Node = {
       id: String(id),
       type: nodeJSON.type,
       position: {
-        x: x,
-        y: y,
+        x: nodeJSON.metadata?.positionX
+          ? Number(nodeJSON.metadata?.positionX)
+          : 0,
+        y: nodeJSON.metadata?.positionY
+          ? Number(nodeJSON.metadata?.positionY)
+          : 0,
       },
       data: {} as { [key: string]: any },
     };
@@ -99,74 +90,107 @@ export const behaveToAuthor = (graph: string): [Node[], Edge[], ICustomEvent[], 
     id++;
   });
 
-  if (needsReflow) {
-    const setComplexLayout = (nodes: Array<Node>, edges: Array<any>) => {
-      const adjacencyList: Record<string, string[]> = {};
+  // set up structure for nodes if one does not exist
+  if (!nodes.some(node => node.position.y !== 0 || node.position.x !== 0)) {
+
+    // Build adjacency list
+    const adjacencyList: Record<string, string[]> = {};
+    edges.forEach((edge) => {
+      const { source, target } = edge;
+      if (!adjacencyList[source]) {
+        adjacencyList[source] = [];
+      }
+      if (!adjacencyList[target]) {
+        adjacencyList[target] = [];
+      }
+      adjacencyList[source].push(target);
+      adjacencyList[target].push(source);
+    });
+    
+    const visited: Record<string, boolean> = {};
+    const disjointGraphs: string[][] = [];
+    const queue: string[] = [];
   
-      // Build adjacency list
-      edges.forEach((edge) => {
-        const { source, target } = edge;
-        if (!adjacencyList[source]) {
-          adjacencyList[source] = [];
+    // Traverse graph and assign disjointGraphs
+    nodes.forEach((node) => {
+      const { id } = node;
+      if (!visited[id]) {
+        visited[id] = true;
+        const disjointGraph: string[] = [];
+        queue.push(id);
+  
+        while (queue.length > 0) {
+          const currentNode = queue.shift() as string;
+          disjointGraph.push(currentNode);
+  
+          if (adjacencyList[currentNode]) {
+            adjacencyList[currentNode].forEach((neighbor) => {
+              if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                queue.push(neighbor);
+              }
+            });  
+          }
         }
-        if (!adjacencyList[target]) {
-          adjacencyList[target] = [];
+  
+        disjointGraphs.push(disjointGraph);
+      }
+    });
+  
+      // Y layer additive reflects the Y to start each new graph at. Should start with 0, and then on a subsequent disjoint graph, add some padding + the last max y.
+      let layerYAdditive = 0;
+      let lastMaxY = 0;
+
+      disjointGraphs.forEach((disjointGraph) => {
+        const nodeNumbers: number[] = [];
+        disjointGraph.forEach((nodeId) => {
+          const i = nodes.findIndex((n) => n.id === nodeId);
+          nodeNumbers.push(i);
+        });
+
+        // Each layer is a vertical column of a disjoint graph. Since we start at the leftmost column where x = -500 (starting point).
+        let lastLayer: number[] = nodeNumbers.filter(num => !edges.some(edge => Number(edge.target) === num));
+        let y = 0;
+        for (let i = 0; i < lastLayer.length; i++) {
+          nodes[lastLayer[i]].position.x = -500;
+          y = 500 * i + layerYAdditive;
+          nodes[lastLayer[i]].position.y = y;
+          if (y > lastMaxY) {
+            lastMaxY = y;
+          }
         }
-        adjacencyList[source].push(target);
-        adjacencyList[target].push(source);
-      });
-  
-      const visited: Record<string, boolean> = {};
-      const rows: string[][] = [];
-      const queue: string[] = [];
-  
-      // Traverse graph and assign rows
-      nodes.forEach((node) => {
-        const { id } = node;
-        if (!visited[id]) {
-          visited[id] = true;
-          const row: string[] = [];
-          queue.push(id);
-  
-          while (queue.length > 0) {
-            const currentNode = queue.shift() as string;
-            row.push(currentNode);
-  
-            if (adjacencyList[currentNode]) {
-              adjacencyList[currentNode].forEach((neighbor) => {
-                if (!visited[neighbor]) {
-                  visited[neighbor] = true;
-                  queue.push(neighbor);
-                }
-              });  
+    
+        let nextLayer: number[] = [];
+        for (const nodeIndex of lastLayer) {
+          const nodeOutEdges: Edge[] = edges.filter(edge => Number(edge.source) === nodeIndex);
+          nextLayer.push(...nodeOutEdges.map(edge => Number(edge.target)));
+        }
+        nextLayer = [...new Set(nextLayer)]
+    
+        let xOffset = 0;
+        while (nextLayer.length > 0) {
+          lastLayer = nextLayer;
+          for (let i = 0; i < lastLayer.length; i++) {
+            nodes[lastLayer[i]].position.x = xOffset;
+            y = 500 * i + layerYAdditive;
+            nodes[lastLayer[i]].position.y = y;
+            if (y > lastMaxY) {
+              lastMaxY = y;
             }
           }
-  
-          rows.push(row);
-        }
-      });
-  
-      // Calculate positions based on rows
-      const horizontalSpacing = 3*150;
-      const verticalSpacing = 4*100;
-
-      const elements: Array<Node> = [];
-  
-      rows.forEach((row, rowIndex) => {
-        row.forEach((nodeId, nodeIndex) => {
-          const node = nodes.find((n) => n.id === nodeId);
-          if (node) {
-            const x = nodeIndex * horizontalSpacing;
-            const y = rowIndex * verticalSpacing;
-            elements.push({ ...node, position: { x, y } });
+    
+          nextLayer = [];
+          for (const nodeIndex of lastLayer) {
+            const nodeOutEdges: Edge[] = edges.filter(edge => Number(edge.source) === nodeIndex);
+            nextLayer.push(...nodeOutEdges.map(edge => Number(edge.target)));
           }
-        });
-      });
-  
-      return elements;
-    };
-  
-    nodes = setComplexLayout(nodes,edges);
+          nextLayer = [...new Set(nextLayer)];
+          xOffset += 500;
+        }
+        layerYAdditive = 800 + lastMaxY;
+    });
+
+      
   }
 
   return [nodes, edges, customEvents, variables];
