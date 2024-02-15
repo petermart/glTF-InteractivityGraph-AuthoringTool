@@ -9,7 +9,7 @@ export class OnTickNode extends BehaveEngineNode {
         this.outValues.timeSinceStart = 0
     }
 
-    setTickOutParams(sinceTick:number, sinceStart:number) {
+    public setTickOutParams(sinceTick:number, sinceStart:number) {
         this.outValues.timeSinceLastTick = {id: "timeSinceLastTick", value: sinceTick, type: this.getTypeIndex("float")};
         this.outValues.timeSinceStart = {id: "timeSinceStart", value: sinceStart, type: this.getTypeIndex("float")};
     }

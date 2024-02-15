@@ -89,6 +89,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
     protected onTickNodeIndex: number;
     private lastTickTime: number;
     private initializeTime: number;
+    private tickNodeAddedToQueue: number;
     private actualLastTickTime: number;
     protected nodes: any[];
     protected variables: IVariable[];
@@ -111,6 +112,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.lastTickTime = 0;
         this.initializeTime = 0;
         this.actualLastTickTime = 0;
+        this.tickNodeAddedToQueue = 0;
         this.eventQueue = [];
         this.variables = [];
         this.customEvents = [];
@@ -365,34 +367,46 @@ export class BasicBehaveEngine implements IBehaveEngine {
     private executeNextEvent = () => {
         while (this.eventQueue.length > 0) {
             const eventToStart = this.eventQueue[0];
-            const asTickNode = eventToStart.behaveNode as OnTickNode;
-            if (asTickNode?.name == "OnTick") {
-                //console.log("he");
-                //console.log(asTickNode);
-                //console.log(`Actual last tick time: ${this.actualLastTickTime}`);
-                const t = Date.now();
-                const timeSinceLastTicks = t - this.actualLastTickTime;// 1000 / this.fps();//
-                const timeSinceStarts = t - this.initializeTime;
-                this.actualLastTickTime = t;
-                
-                //console.log(`Time since last tick last tick time: ${timeSinceLastTicks}`);
+            if (eventToStart.behaveNode?.name == "OnTick") {
+                const asTickNode = eventToStart.behaveNode as OnTickNode;
 
-                const divisor = 1000; // I thought this number should be 1000 but works better with 200 idk why
-                (asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
+                // Ensure that that time between queued and started is added
+                const t = Date.now();
+                const timeBetweenQueuedAndStarted = (t - this.tickNodeAddedToQueue)/1000;
+                console.log(`The actualDelta from forecasted tick is ${timeBetweenQueuedAndStarted}`);
+                this.actualLastTickTime = t;
+                asTickNode.setTickOutParams(asTickNode.outValues.timeSinceLastTick.value + timeBetweenQueuedAndStarted, asTickNode.outValues.timeSinceStart.value);
+                
+                // Results seem better from setting parameters from when queued as opposed to from here. Then we add the delta (above).
+                //(asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
             }
             eventToStart.behaveNode.processNode(eventToStart.inSocketId);
+
+            // Results seem better if we reset actual last tick time to be at the end of tick execution as opposed to the start of the execution.
+            this.actualLastTickTime = Date.now();
+
             this.eventQueue.splice(0, 1);
         }
 
         if (this.onTickNodeIndex !== -1) {
             const timeNow = Date.now();
-            const timeSinceLastTick = timeNow - this.lastTickTime;
+            const timeSinceLastTick = timeNow - this.actualLastTickTime;
             const timeSinceTickStart = timeNow - this.initializeTime;
+            const deltaTime = Math.max(1000 / this.fps() - timeSinceLastTick,0);
+            console.log(`Between ${Math.max(1000 / this.fps() - timeSinceLastTick,0)}`)
             setTimeout(() => {
                 const tickFlow: IFlow = {node: this.onTickNodeIndex, id: "tick"}
+                if (tickFlow.node != undefined) {
+                    // Results seemed better adding tick out params from when they are added to queue here as opposed to when ran.
+                    const tickNode = this.idToBehaviourNodeMap.get(this.onTickNodeIndex) as OnTickNode;
+                    tickNode.setTickOutParams(deltaTime/1000, timeSinceTickStart/1000);
+                    this.tickNodeAddedToQueue = Date.now();
+                }
+
+
                 this.addEventToWorkQueue(tickFlow)
-                this.lastTickTime = timeNow;
-            }, Math.max(1000 / this.fps() - timeSinceLastTick,0))
+                this.lastTickTime = Date.now(); //timeNow;
+            }, deltaTime)
         }
     }
 }

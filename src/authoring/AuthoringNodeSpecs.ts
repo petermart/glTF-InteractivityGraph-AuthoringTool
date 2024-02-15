@@ -3157,5 +3157,5 @@ export const comparisonNodeSpecs = [
 ]
 
 export const authoringNodeSpecs: IAuthoringNode[] = [...worldNodeSpecs, ...flowNodeSpecs, ...lifecycleNodeSpecs, ...customEventNodeSpecs, ...variableNodeSpecs,
-    ...constantsNodes, ...arithmeticNodes, ...trigNodes, ...hyperbolicNodes, ...exponentialFunctionNodes, ...experimentalNodeSpecs, ...vectorNodes,
+    ...constantsNodes, ...arithmeticNodes, ...comparisonNodeSpecs, ...trigNodes, ...hyperbolicNodes, ...exponentialFunctionNodes, ...experimentalNodeSpecs, ...vectorNodes,
     ...specialFloatingPointNodeSpecs];
