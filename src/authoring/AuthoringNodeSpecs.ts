@@ -1466,7 +1466,8 @@ export const arithmeticNodes = [
                     description: "First factor",
                     types: [
                         "float",
-                        "float3"
+                        "float3",
+                        "float4"
                     ]
                 },
                 {
@@ -1474,7 +1475,8 @@ export const arithmeticNodes = [
                     description: "Second factor",
                     types: [
                         "float",
-                        "float3"
+                        "float3",
+                        "float4"
                     ]
                 }
             ]
@@ -2635,6 +2637,56 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
+        type: "math/break_vector4",
+        description: "Break a vector 4 into an w x y and z",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input vector",
+                    types: [
+                        "float4"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "w",
+                    description: "The first scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "x",
+                    description: "The second scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "y",
+                    description: "The third scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "z",
+                    description: "The fourth scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        }
+    },
+    {
         type: "math/inverse",
         description: "The matrix inverse",
         configuration: [],
@@ -2689,6 +2741,92 @@ export const vectorNodes: IAuthoringNode[] = [
                         "float"
                     ]
                 }
+            ]
+        }
+    },
+    {
+        type: "math/make_vector3",
+        description: "Make a vector 3 into an x y and z",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "x",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "y",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "z",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "result",
+                    description: "The result vec3 built by the node",
+                    types: [
+                        "float3"
+                    ]
+                },
+            ]
+        }
+    },
+    {
+        type: "math/make_vector4",
+        description: "Make a vector 4 into an x y and z",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "x",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "y",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
+                    id: "z",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "result",
+                    description: "The result vec3 built by the node",
+                    types: [
+                        "float3"
+                    ]
+                },
             ]
         }
     },
