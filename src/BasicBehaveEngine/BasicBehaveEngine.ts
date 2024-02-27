@@ -373,7 +373,6 @@ export class BasicBehaveEngine implements IBehaveEngine {
                 // Ensure that that time between queued and started is added
                 const t = Date.now();
                 const timeBetweenQueuedAndStarted = (t - this.tickNodeAddedToQueue)/1000;
-                console.log(`The actualDelta from forecasted tick is ${timeBetweenQueuedAndStarted}`);
                 this.actualLastTickTime = t;
                 asTickNode.setTickOutParams(asTickNode.outValues.timeSinceLastTick.value + timeBetweenQueuedAndStarted, asTickNode.outValues.timeSinceStart.value);
                 
@@ -381,32 +380,31 @@ export class BasicBehaveEngine implements IBehaveEngine {
                 //(asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
             }
             eventToStart.behaveNode.processNode(eventToStart.inSocketId);
-
-            // Results seem better if we reset actual last tick time to be at the end of tick execution as opposed to the start of the execution.
-            this.actualLastTickTime = Date.now();
+            if (eventToStart.behaveNode?.name == "OnTick" && this.onTickNodeIndex !== -1) {
+                // Results seem better if we reset actual last tick time to be at the end of tick execution as opposed to the start of the execution.
+                this.actualLastTickTime = Date.now();
+                const timeNow = Date.now();
+                const timeSinceLastTick = timeNow - this.actualLastTickTime;
+                const timeSinceTickStart = timeNow - this.initializeTime;
+                const deltaTime = Math.max(1000 / this.fps() - timeSinceLastTick,0);
+                setTimeout(() => {
+                    const tickFlow: IFlow = {node: this.onTickNodeIndex, id: "tick"}
+                    if (tickFlow.node != undefined) {
+                        // Results seemed better adding tick out params from when they are added to queue here as opposed to when ran.
+                        const tickNode = this.idToBehaviourNodeMap.get(this.onTickNodeIndex) as OnTickNode;
+                        tickNode.setTickOutParams(deltaTime/1000, timeSinceTickStart/1000);
+                        this.tickNodeAddedToQueue = Date.now();
+                    }
+    
+    
+                    this.addEventToWorkQueue(tickFlow)
+                    this.lastTickTime = Date.now(); //timeNow;
+                }, deltaTime)
+            }
+    
 
             this.eventQueue.splice(0, 1);
         }
 
-        if (this.onTickNodeIndex !== -1) {
-            const timeNow = Date.now();
-            const timeSinceLastTick = timeNow - this.actualLastTickTime;
-            const timeSinceTickStart = timeNow - this.initializeTime;
-            const deltaTime = Math.max(1000 / this.fps() - timeSinceLastTick,0);
-            console.log(`Between ${Math.max(1000 / this.fps() - timeSinceLastTick,0)}`)
-            setTimeout(() => {
-                const tickFlow: IFlow = {node: this.onTickNodeIndex, id: "tick"}
-                if (tickFlow.node != undefined) {
-                    // Results seemed better adding tick out params from when they are added to queue here as opposed to when ran.
-                    const tickNode = this.idToBehaviourNodeMap.get(this.onTickNodeIndex) as OnTickNode;
-                    tickNode.setTickOutParams(deltaTime/1000, timeSinceTickStart/1000);
-                    this.tickNodeAddedToQueue = Date.now();
-                }
-
-
-                this.addEventToWorkQueue(tickFlow)
-                this.lastTickTime = Date.now(); //timeNow;
-            }, deltaTime)
-        }
     }
 }
