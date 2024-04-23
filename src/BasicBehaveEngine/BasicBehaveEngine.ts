@@ -386,7 +386,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
                 //(asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
             }
             eventToStart.behaveNode.processNode(eventToStart.inSocketId);
-            if (eventToStart.behaveNode?.name == "OnTick" && this.onTickNodeIndex !== -1) {
+            if (this.onTickNodeIndex !== -1) {
                 // Results seem better if we reset actual last tick time to be at the end of tick execution as opposed to the start of the execution.
                 this.actualLastTickTime = Date.now();
                 const timeNow = Date.now();
