@@ -266,7 +266,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("world/get", WorldGet);
         this.registerBehaveEngineNode("world/set", WorldSet);
         this.registerBehaveEngineNode("world/animateTo", WorldAnimateTo);
-        this.registerBehaveEngineNode("ADBE/output_console_node", OutputConsole);
+        this.registerBehaveEngineNode("ADBE/outputConsoleNode", OutputConsole);
         this.registerBehaveEngineNode("math/abs", AbsoluteValue);
         this.registerBehaveEngineNode("customEvent/receive", Receive);
         this.registerBehaveEngineNode("customEvent/send", Send);
@@ -317,10 +317,10 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/inverse", Inverse);
         this.registerBehaveEngineNode("math/compose", Compose);
         this.registerBehaveEngineNode("math/decompose", Decompose);
-        this.registerBehaveEngineNode("math/break_vector3", BreakVector3);
-        this.registerBehaveEngineNode("math/break_vector4", BreakVector4);
-        this.registerBehaveEngineNode("math/make_vector3", MakeVector3);
-        this.registerBehaveEngineNode("math/make_vector4", MakeVector4);
+        this.registerBehaveEngineNode("math/breakVector3", BreakVector3);
+        this.registerBehaveEngineNode("math/breakVector4", BreakVector4);
+        this.registerBehaveEngineNode("math/makeVector3", MakeVector3);
+        this.registerBehaveEngineNode("math/makeVector4", MakeVector4);
         this.registerBehaveEngineNode("math/rotate2d", Rotate2D);
         this.registerBehaveEngineNode("math/rotate3d", Rotate3D);
         this.registerBehaveEngineNode("math/isinf", IsInfNode);

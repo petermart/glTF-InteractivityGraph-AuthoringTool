@@ -304,7 +304,7 @@ export const worldNodeSpecs: IAuthoringNode[] = [
         }
     },
     {
-        type: "ADBE/output_console_node",
+        type: "ADBE/outputConsoleNode",
         description: "Print out",
         configuration: [],
         input: {
@@ -2594,7 +2594,7 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/break_vector3",
+        type: "math/breakVector3",
         description: "Break a vector 3 into an x y and z",
         configuration: [],
         input: {
@@ -2637,7 +2637,7 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/break_vector4",
+        type: "math/breakVector4",
         description: "Break a vector 4 into an w x y and z",
         configuration: [],
         input: {
@@ -2656,6 +2656,13 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
+                    id: "w",
+                    description: "The first scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
                     id: "x",
                     description: "The second scalar in the vector",
                     types: [
@@ -2672,13 +2679,6 @@ export const vectorNodes: IAuthoringNode[] = [
                 {
                     id: "z",
                     description: "The fourth scalar in the vector",
-                    types: [
-                        "float"
-                    ]
-                },
-                {
-                    id: "w",
-                    description: "The first scalar in the vector",
                     types: [
                         "float"
                     ]
@@ -2745,7 +2745,7 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/make_vector3",
+        type: "math/makeVector3",
         description: "Make a vector 3 into an x y and z",
         configuration: [],
         input: {
@@ -2788,8 +2788,8 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/make_vector4",
-        description: "Make a vector 4 into an x y z and w",
+        type: "math/makeVector4",
+        description: "Make a vector 4 into an x y and z",
         configuration: [],
         input: {
             flows: [],
@@ -2815,13 +2815,6 @@ export const vectorNodes: IAuthoringNode[] = [
                         "float"
                     ]
                 },
-                {
-                    id: "w",
-                    description: "Input value",
-                    types: [
-                        "float"
-                    ]
-                }
             ]
         },
         output: {
