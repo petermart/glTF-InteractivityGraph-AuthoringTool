@@ -18,8 +18,7 @@ export class MakeVector4 extends BehaveEngineNode {
         //console.log(y);
         //console.log(z);
 
-        this.outValues.result = {id: "result", value: [x, y, z, w], type: this.getTypeIndex('float4')};
-
+        this.outValues[flowSocket || "value"] = {id: "value", value: [x, y, z, w], type: this.getTypeIndex('float4')};
         return null;
     }
 }

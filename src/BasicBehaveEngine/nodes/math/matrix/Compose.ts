@@ -29,6 +29,6 @@ export class Compose extends BehaveEngineNode {
         let val: any;
 
         const transformMatrix = MatrixHelper.composeMatrix(translation,rotation,scale);
-        return {id: "val", value: transformMatrix, type: this.getTypeIndex("float4x4")};
+        return {id: "value", value: transformMatrix, type: this.getTypeIndex("float4x4")};
     }
 }

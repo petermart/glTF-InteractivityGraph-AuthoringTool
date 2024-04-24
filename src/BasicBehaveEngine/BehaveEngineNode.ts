@@ -203,7 +203,7 @@ export class BehaveEngineNode {
 
             let valueToReturn: any;
             let typeIndex: number;
-            const dependentValue = dependentNode?.flows.out != null ? null : dependentNode.processNode();
+            const dependentValue = dependentNode?.flows.out != null ? null : dependentNode.processNode(val.socket);
             if (dependentNode.outValues !== undefined && dependentNode.outValues[val.socket!] !== undefined) {
                 //socket has already been evaluated so return it
                 valueToReturn = dependentNode.outValues[val.socket!].value;

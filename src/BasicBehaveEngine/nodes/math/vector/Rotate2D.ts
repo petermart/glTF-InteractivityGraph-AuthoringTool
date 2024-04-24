@@ -45,6 +45,6 @@ export class Rotate2D extends BehaveEngineNode {
                 throw Error("Invalid type")
         }
 
-        return {id: "val", value: val, type: typeIndexA}
+        return {id: "value", value: val, type: typeIndexA}
     }
 }

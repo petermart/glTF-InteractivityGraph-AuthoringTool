@@ -51,6 +51,6 @@ export class Multiply extends BehaveEngineNode {
             }    
         }
 
-        return {id: "val", value: val, type: type}
+        return {id: "value", value: val, type: type}
     }
 }

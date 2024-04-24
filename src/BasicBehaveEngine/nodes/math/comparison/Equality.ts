@@ -32,6 +32,6 @@ export class Equality extends BehaveEngineNode {
             default:
                 throw Error("Invalid type")
         }
-        return {id: "val", value: val, type: this.getTypeIndex('bool')}
+        return {id: "value", value: val, type: this.getTypeIndex('bool')}
     }
 }
