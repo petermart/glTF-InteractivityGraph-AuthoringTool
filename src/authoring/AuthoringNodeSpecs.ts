@@ -341,6 +341,45 @@ export const worldNodeSpecs: IAuthoringNode[] = [
                 }
             ]
         }
+    },
+    {
+        type: "ADBE/toStringNode",
+        description: "Print out",
+        configuration: [],
+        input: {
+            flows: [
+                {
+                    id: "in",
+                    description: "The entry flow into this node.",
+                }
+            ],
+            values: [
+                {
+                    id: "in",
+                    description: "First Argument",
+                    types: [
+                        "AMZN_interactivity_string"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [
+                {
+                    id: "out",
+                    description: "The flow to be followed after the delay",
+                }
+            ],
+            values: [
+                {
+                    id: "value",
+                    description: "True if >= else false",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
     }
 ]
 
@@ -1118,28 +1157,17 @@ export const constantsNodes = [
 
 export const arithmeticNodes = [
     {
-        type: "math/cast",
+        type: "type/boolToInt",
         description: "Cast operation",
-        configuration: [
-            {
-                id: "castType",
-                description: "The string type name of what to cast to",
-                type: "string"
-            },
-        ],
+        configuration: [],
         input: {
             flows: [],
             values: [
                 {
                     id: "a",
-                    description: "First Addend",
+                    description: "Input value to cast",
                     types: [
-                        "float",
-                        "int",
-                        "bool",
-                        "float3",
-                        "float4",
-                        "float4x4"
+                        "bool"
                     ]
                 }
             ]
@@ -1149,11 +1177,154 @@ export const arithmeticNodes = [
             values: [
                 {
                     id: "value",
-                    description: "cast",
+                    description: "cast result",
                     types: [
-                        "float",
-                        "int",
+                        "int"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/boolToFloat",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
                         "bool"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/intToBool",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "int"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/intToFloat",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "int"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "f;oat"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/floatToBool",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/floatToInt",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "int"
                     ]
                 }
             ]
