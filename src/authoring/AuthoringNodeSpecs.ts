@@ -304,7 +304,7 @@ export const worldNodeSpecs: IAuthoringNode[] = [
         }
     },
     {
-        type: "ADBE/output_console_node",
+        type: "ADBE/outputConsoleNode",
         description: "Print out",
         configuration: [],
         input: {
@@ -333,7 +333,46 @@ export const worldNodeSpecs: IAuthoringNode[] = [
             ],
             values: [
                 {
-                    id: "val",
+                    id: "value",
+                    description: "True if >= else false",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "ADBE/toStringNode",
+        description: "Print out",
+        configuration: [],
+        input: {
+            flows: [
+                {
+                    id: "in",
+                    description: "The entry flow into this node.",
+                }
+            ],
+            values: [
+                {
+                    id: "in",
+                    description: "First Argument",
+                    types: [
+                        "AMZN_interactivity_string"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [
+                {
+                    id: "out",
+                    description: "The flow to be followed after the delay",
+                }
+            ],
+            values: [
+                {
+                    id: "value",
                     description: "True if >= else false",
                     types: [
                         "bool"
@@ -408,7 +447,7 @@ export const experimentalNodeSpecs: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Random float",
                     types: ["float"]
                 }
@@ -1069,7 +1108,7 @@ export const constantsNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Euler's Number",
                     types: ["float"]
                 }
@@ -1088,7 +1127,7 @@ export const constantsNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Infinity",
                     types: ["float"]
                 }
@@ -1107,7 +1146,7 @@ export const constantsNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Ratio of a circle’s circumference to its diameter",
                     types: ["float"]
                 }
@@ -1118,28 +1157,17 @@ export const constantsNodes = [
 
 export const arithmeticNodes = [
     {
-        type: "math/cast",
+        type: "type/boolToInt",
         description: "Cast operation",
-        configuration: [
-            {
-                id: "castType",
-                description: "The string type name of what to cast to",
-                type: "string"
-            },
-        ],
+        configuration: [],
         input: {
             flows: [],
             values: [
                 {
                     id: "a",
-                    description: "First Addend",
+                    description: "Input value to cast",
                     types: [
-                        "float",
-                        "int",
-                        "bool",
-                        "float3",
-                        "float4",
-                        "float4x4"
+                        "bool"
                     ]
                 }
             ]
@@ -1148,12 +1176,155 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
-                    description: "cast",
+                    id: "value",
+                    description: "cast result",
                     types: [
-                        "float",
-                        "int",
+                        "int"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/boolToFloat",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
                         "bool"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/intToBool",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "int"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/intToFloat",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "int"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "f;oat"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/floatToBool",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "bool"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        type: "type/floatToInt",
+        description: "Cast operation",
+        configuration: [],
+        input: {
+            flows: [],
+            values: [
+                {
+                    id: "a",
+                    description: "Input value to cast",
+                    types: [
+                        "float"
+                    ]
+                }
+            ]
+        },
+        output: {
+            flows: [],
+            values: [
+                {
+                    id: "value",
+                    description: "cast result",
+                    types: [
+                        "int"
                     ]
                 }
             ]
@@ -1180,7 +1351,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "if a > 0 then -a, else a",
                     types: [
                         "float",
@@ -1211,7 +1382,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "if a > 0 then -1, else 1",
                     types: [
                         "float",
@@ -1242,7 +1413,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Integer value equal to the nearest integer to a whose absolute value is not larger than the absolute value of a",
                     types: [
                         "float",
@@ -1273,7 +1444,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Value equal to the nearest integer that is less than or equal to a",
                     types: [
                         "float",
@@ -1304,7 +1475,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Value equal to the nearest integer that is greater than or equal to a",
                     types: [
                         "float",
@@ -1335,7 +1506,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a - floor(a)",
                     types: [
                         "float",
@@ -1366,7 +1537,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "-a",
                     types: [
                         "float",
@@ -1405,7 +1576,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a + b",
                     types: [
                         "float",
@@ -1444,7 +1615,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a - b",
                     types: [
                         "float",
@@ -1485,7 +1656,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a * b",
                     types: [
                         "float",
@@ -1524,7 +1695,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a / b",
                     types: [
                         "float",
@@ -1563,7 +1734,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "remainder of a / b",
                     types: [
                         "float",
@@ -1602,7 +1773,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "smallest of a and b",
                     types: [
                         "float",
@@ -1641,7 +1812,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "largest of a and b",
                     types: [
                         "float",
@@ -1688,7 +1859,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "min(max(a,b),c)",
                     types: [
                         "float",
@@ -1719,7 +1890,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "clamp(a,0,1)",
                     types: [
                         "float",
@@ -1766,7 +1937,7 @@ export const arithmeticNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "(1.0 - c) * a + c * b",
                     types: [
                         "float",
@@ -1800,7 +1971,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a * pi / 180",
                     types: [
                         "float",
@@ -1831,7 +2002,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a * 180 / pi",
                     types: [
                         "float",
@@ -1862,7 +2033,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "sin(a)",
                     types: [
                         "float",
@@ -1893,7 +2064,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "cos(a)",
                     types: [
                         "float",
@@ -1924,7 +2095,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "tan(a)",
                     types: [
                         "float",
@@ -1955,7 +2126,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "arcsin(a)",
                     types: [
                         "float",
@@ -1986,7 +2157,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Arccos(a)",
                     types: [
                         "float",
@@ -2017,7 +2188,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "atan(a)",
                     types: [
                         "float",
@@ -2048,7 +2219,7 @@ export const trigNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "atan2(a)",
                     types: [
                         "float",
@@ -2082,7 +2253,7 @@ export const hyperbolicNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "sinh(a)",
                     types: [
                         "float",
@@ -2113,7 +2284,7 @@ export const hyperbolicNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "cosh(a)",
                     types: [
                         "float",
@@ -2144,7 +2315,7 @@ export const hyperbolicNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "tanh(a)",
                     types: [
                         "float",
@@ -2175,7 +2346,7 @@ export const hyperbolicNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "arcsinh(a)",
                     types: [
                         "float",
@@ -2206,7 +2377,7 @@ export const hyperbolicNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Arccosh(a)",
                     types: [
                         "float",
@@ -2237,7 +2408,7 @@ export const hyperbolicNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "atanh(a)",
                     types: [
                         "float",
@@ -2279,7 +2450,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "b^a",
                     types: [
                         "float",
@@ -2310,7 +2481,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "e^a",
                     types: [
                         "float",
@@ -2341,7 +2512,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "ln(a)",
                     types: [
                         "float",
@@ -2372,7 +2543,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "log_2(a)",
                     types: [
                         "float",
@@ -2403,7 +2574,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "log_10(a)",
                     types: [
                         "float",
@@ -2434,7 +2605,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a root 2",
                     types: [
                         "float",
@@ -2465,7 +2636,7 @@ export const exponentialFunctionNodes = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "a root 3",
                     types: [
                         "float",
@@ -2512,7 +2683,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Composed matrix",
                     types: [
                         "float4x4"
@@ -2584,7 +2755,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Output Matrix",
                     types: [
                         "float4x4"
@@ -2594,7 +2765,7 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/break_vector3",
+        type: "math/breakVector3",
         description: "Break a vector 3 into an x y and z",
         configuration: [],
         input: {
@@ -2637,7 +2808,7 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/break_vector4",
+        type: "math/breakVector4",
         description: "Break a vector 4 into an w x y and z",
         configuration: [],
         input: {
@@ -2656,6 +2827,13 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
+                    id: "w",
+                    description: "The first scalar in the vector",
+                    types: [
+                        "float"
+                    ]
+                },
+                {
                     id: "x",
                     description: "The second scalar in the vector",
                     types: [
@@ -2672,13 +2850,6 @@ export const vectorNodes: IAuthoringNode[] = [
                 {
                     id: "z",
                     description: "The fourth scalar in the vector",
-                    types: [
-                        "float"
-                    ]
-                },
-                {
-                    id: "w",
-                    description: "The first scalar in the vector",
                     types: [
                         "float"
                     ]
@@ -2706,7 +2877,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Output Matrix",
                     types: [
                         "float4x4"
@@ -2735,7 +2906,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Length of the vector",
                     types: [
                         "float"
@@ -2745,7 +2916,7 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/make_vector3",
+        type: "math/makeVector3",
         description: "Make a vector 3 into an x y and z",
         configuration: [],
         input: {
@@ -2778,7 +2949,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "result",
+                    id: "value",
                     description: "The result vec3 built by the node",
                     types: [
                         "float3"
@@ -2788,12 +2959,19 @@ export const vectorNodes: IAuthoringNode[] = [
         }
     },
     {
-        type: "math/make_vector4",
-        description: "Make a vector 4 into an x y z and w",
+        type: "math/makeVector4",
+        description: "Make a vector 4 into an x y and z",
         configuration: [],
         input: {
             flows: [],
             values: [
+                {
+                    id: "w",
+                    description: "Input value",
+                    types: [
+                        "float"
+                    ]
+                },
                 {
                     id: "x",
                     description: "Input value",
@@ -2815,23 +2993,16 @@ export const vectorNodes: IAuthoringNode[] = [
                         "float"
                     ]
                 },
-                {
-                    id: "w",
-                    description: "Input value",
-                    types: [
-                        "float"
-                    ]
-                }
             ]
         },
         output: {
             flows: [],
             values: [
                 {
-                    id: "result",
+                    id: "value",
                     description: "The result vec3 built by the node",
                     types: [
-                        "float3"
+                        "float4"
                     ]
                 },
             ]
@@ -2857,7 +3028,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Normalized Vector",
                     types: [
                         "float3"
@@ -2893,7 +3064,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Dot product",
                     types: [
                         "float"
@@ -2929,7 +3100,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Cross product",
                     types: [
                         "float3"
@@ -2965,7 +3136,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Rotated vector",
                     types: [
                         "float2"
@@ -3001,7 +3172,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Matrix multiplication product",
                     types: [
                         "float4x4"
@@ -3044,7 +3215,7 @@ export const vectorNodes: IAuthoringNode[] = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "Rotated vector",
                     types: [
                         "float3"
@@ -3076,7 +3247,7 @@ export const specialFloatingPointNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if NaN else false",
                     types: [
                         "bool"
@@ -3105,7 +3276,7 @@ export const specialFloatingPointNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if a is +/- Inf, else false",
                     types: [
                         "bool"
@@ -3146,7 +3317,7 @@ export const comparisonNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if equal else false",
                     types: [
                         "bool"
@@ -3182,7 +3353,7 @@ export const comparisonNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if < else false",
                     types: [
                         "bool"
@@ -3218,7 +3389,7 @@ export const comparisonNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if <= else false",
                     types: [
                         "bool"
@@ -3254,7 +3425,7 @@ export const comparisonNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if > else false",
                     types: [
                         "bool"
@@ -3290,7 +3461,7 @@ export const comparisonNodeSpecs = [
             flows: [],
             values: [
                 {
-                    id: "val",
+                    id: "value",
                     description: "True if >= else false",
                     types: [
                         "bool"

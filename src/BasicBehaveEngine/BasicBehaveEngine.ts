@@ -28,7 +28,12 @@ import {Truncate} from "./nodes/math/arithmetic/Truncate";
 import {Floor} from "./nodes/math/arithmetic/Floor";
 import {Ceil} from "./nodes/math/arithmetic/Ceil";
 import {Negate} from "./nodes/math/arithmetic/Negate";
-import {Cast} from "./nodes/math/arithmetic/Cast";
+import {CastBoolToInt} from "./nodes/math/arithmetic/Cast";
+import {CastBoolToFloat} from "./nodes/math/arithmetic/Cast";
+import {CastIntToBool} from "./nodes/math/arithmetic/Cast";
+import {CastIntToFloat} from "./nodes/math/arithmetic/Cast";
+import {CastFloatToBool} from "./nodes/math/arithmetic/Cast";
+import {CastFloatToInt} from "./nodes/math/arithmetic/Cast";
 import {Add} from "./nodes/math/arithmetic/Add";
 import {Subtract} from "./nodes/math/arithmetic/Subtract";
 import {Multiply} from "./nodes/math/arithmetic/Multiply";
@@ -74,6 +79,7 @@ import {GreaterThanOrEqualTo} from "./nodes/math/comparison/GreaterThanOrEqualTo
 import {GreaterThan} from "./nodes/math/comparison/GreaterThan";
 import {Inf} from "./nodes/math/constants/Inf";
 import {OutputConsole} from "./nodes/experimental/OutputConsole";
+import {ToString} from "./nodes/experimental/ToString";
 
 export interface ICustomEventListener {
     type: string,
@@ -266,7 +272,8 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("world/get", WorldGet);
         this.registerBehaveEngineNode("world/set", WorldSet);
         this.registerBehaveEngineNode("world/animateTo", WorldAnimateTo);
-        this.registerBehaveEngineNode("ADBE/output_console_node", OutputConsole);
+        this.registerBehaveEngineNode("ADBE/outputConsoleNode", OutputConsole);
+        this.registerBehaveEngineNode("ADBE/toStringNode", ToString);
         this.registerBehaveEngineNode("math/abs", AbsoluteValue);
         this.registerBehaveEngineNode("customEvent/receive", Receive);
         this.registerBehaveEngineNode("customEvent/send", Send);
@@ -284,7 +291,13 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/clamp", Clamp);
         this.registerBehaveEngineNode("math/normalize", Normalize);
 
-        this.registerBehaveEngineNode("math/cast", Cast);
+        this.registerBehaveEngineNode("type/boolToInt", CastBoolToInt);
+        this.registerBehaveEngineNode("type/boolToFloat", CastBoolToFloat);
+        this.registerBehaveEngineNode("type/intToBool", CastIntToBool);
+        this.registerBehaveEngineNode("type/intToFloat", CastIntToFloat);
+        this.registerBehaveEngineNode("type/floatToBool", CastFloatToBool);
+        this.registerBehaveEngineNode("type/floatToInt", CastFloatToInt);
+
         this.registerBehaveEngineNode("math/sub", Subtract);
         this.registerBehaveEngineNode("math/mul", Multiply);
         this.registerBehaveEngineNode("math/div", Divide);
@@ -317,10 +330,10 @@ export class BasicBehaveEngine implements IBehaveEngine {
         this.registerBehaveEngineNode("math/inverse", Inverse);
         this.registerBehaveEngineNode("math/compose", Compose);
         this.registerBehaveEngineNode("math/decompose", Decompose);
-        this.registerBehaveEngineNode("math/break_vector3", BreakVector3);
-        this.registerBehaveEngineNode("math/break_vector4", BreakVector4);
-        this.registerBehaveEngineNode("math/make_vector3", MakeVector3);
-        this.registerBehaveEngineNode("math/make_vector4", MakeVector4);
+        this.registerBehaveEngineNode("math/breakVector3", BreakVector3);
+        this.registerBehaveEngineNode("math/breakVector4", BreakVector4);
+        this.registerBehaveEngineNode("math/makeVector3", MakeVector3);
+        this.registerBehaveEngineNode("math/makeVector4", MakeVector4);
         this.registerBehaveEngineNode("math/rotate2d", Rotate2D);
         this.registerBehaveEngineNode("math/rotate3d", Rotate3D);
         this.registerBehaveEngineNode("math/isinf", IsInfNode);
@@ -386,7 +399,7 @@ export class BasicBehaveEngine implements IBehaveEngine {
                 //(asTickNode as OnTickNode).setTickOutParams(timeSinceLastTicks/divisor, timeSinceStarts/divisor);
             }
             eventToStart.behaveNode.processNode(eventToStart.inSocketId);
-            if (eventToStart.behaveNode?.name == "OnTick" && this.onTickNodeIndex !== -1) {
+            if (this.onTickNodeIndex !== -1) {
                 // Results seem better if we reset actual last tick time to be at the end of tick execution as opposed to the start of the execution.
                 this.actualLastTickTime = Date.now();
                 const timeNow = Date.now();

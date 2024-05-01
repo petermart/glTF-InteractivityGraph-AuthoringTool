@@ -17,17 +17,22 @@ export class LessThan extends BehaveEngineNode {
         const typeIndexB = this.values['b'].type!
         const typeB: string = this.getType(typeIndexB);
         if (typeA !== typeB) {
-            throw Error("input types not equivalent")
+            if ((typeA == 'float' || typeA == 'int') && (typeB == 'float' || typeB == 'int')) {
+                // typeA and typeB are operable types
+            } else {
+                throw Error("input types not equivalent")
+            }
         }
         let val: any;
 
         switch (typeA) {
+            case "int":
             case "float":
                 val = a < b;
                 break;
             default:
                 throw Error("Invalid type")
         }
-        return {id: "val", value: val, type: this.getTypeIndex('bool')}
+        return {id: "value", value: val, type: this.getTypeIndex('bool')}
     }
 }

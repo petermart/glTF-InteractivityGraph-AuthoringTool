@@ -65,7 +65,7 @@ export class WorldGet extends BehaveEngineNode {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const typeIndex = this.getTypeIndex(typeName!);
 
-        return {id: "val", value: outVal, type: typeIndex}
+        return {id: "value", value: outVal, type: typeIndex}
     }
 }
 

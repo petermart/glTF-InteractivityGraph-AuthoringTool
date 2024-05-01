@@ -17,11 +17,16 @@ export class Power extends BehaveEngineNode {
         const typeIndexB = this.values['b'].type!
         const typeB: string = this.getType(typeIndexB);
         if (typeA !== typeB) {
-            throw Error("input types not equivalent")
+            if ((typeA == 'float' || typeA == 'int') && (typeB == 'float' || typeB == 'int')) {
+                // typeA and typeB are operable types
+            } else {
+                throw Error("input types not equivalent")
+            }
         }
         let val: any;
 
         switch (typeA) {
+            case "int":
             case "float":
                 val = Math.pow(a, b);
                 break;
@@ -36,6 +41,6 @@ export class Power extends BehaveEngineNode {
                 throw Error("Invalid type")
         }
 
-        return {id: "val", value: val, type: typeIndexA}
+        return {id: "value", value: val, type: typeIndexA}
     }
 }

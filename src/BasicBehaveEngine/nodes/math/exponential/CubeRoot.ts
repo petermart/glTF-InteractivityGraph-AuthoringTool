@@ -31,6 +31,6 @@ export class CubeRoot extends BehaveEngineNode {
                 throw Error("Invalid type")
         }
 
-        return {id: "val", value: val, type: typeIndex}
+        return {id: "value", value: val, type: typeIndex}
     }
 }
