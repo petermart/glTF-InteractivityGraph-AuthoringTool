@@ -17,16 +17,11 @@ export class Arctangent2 extends BehaveEngineNode {
         const typeBIndex = this.values['b'].type!
         const typeB: string = this.getType(typeBIndex);
         if (typeA !== typeB) {
-            if ((typeA == 'float' || typeA == 'int') && (typeB == 'float' || typeB == 'int')) {
-                // typeA and typeB are operable types
-            } else {
-                throw Error("input types not equivalent")
-            }
+            throw Error("input types not equivalent")
         }
         let val: any;
 
         switch (typeA) {
-            case 'int':
             case "float":
                 val = Math.atan2(a, b);
                 break;
