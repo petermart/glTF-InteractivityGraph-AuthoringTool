@@ -1341,6 +1341,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1372,6 +1373,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1434,6 +1436,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1465,6 +1468,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1527,6 +1531,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1558,6 +1563,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "First Addend",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1597,6 +1603,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Minuend",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1636,6 +1643,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "First factor",
                     types: [
+                        "int",
                         "float",
                         "float3",
                         "float4"
@@ -1677,6 +1685,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Dividend",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1716,6 +1725,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Dividend",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1755,6 +1765,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "First Arg",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1794,6 +1805,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "First Arg",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -1833,6 +1845,7 @@ export const arithmeticNodes = [
                     id: "a",
                     description: "Value to clamp",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -2432,6 +2445,7 @@ export const exponentialFunctionNodes = [
                     id: "a",
                     description: "Base",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -2440,6 +2454,7 @@ export const exponentialFunctionNodes = [
                     id: "b",
                     description: "Exponent",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -2471,6 +2486,7 @@ export const exponentialFunctionNodes = [
                     id: "a",
                     description: "Exponent",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -2484,6 +2500,7 @@ export const exponentialFunctionNodes = [
                     id: "value",
                     description: "e^a",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -2595,6 +2612,7 @@ export const exponentialFunctionNodes = [
                     id: "a",
                     description: "Radicand",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -3299,6 +3317,7 @@ export const comparisonNodeSpecs = [
                     id: "a",
                     description: "First Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -3307,6 +3326,7 @@ export const comparisonNodeSpecs = [
                     id: "b",
                     description: "Second Argument",
                     types: [
+                        "int",
                         "float",
                         "float3"
                     ]
@@ -3337,6 +3357,7 @@ export const comparisonNodeSpecs = [
                     id: "a",
                     description: "First Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 },
@@ -3344,6 +3365,7 @@ export const comparisonNodeSpecs = [
                     id: "b",
                     description: "Second Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 }
@@ -3373,6 +3395,7 @@ export const comparisonNodeSpecs = [
                     id: "a",
                     description: "First Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 },
@@ -3380,6 +3403,7 @@ export const comparisonNodeSpecs = [
                     id: "b",
                     description: "Second Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 }
@@ -3409,6 +3433,7 @@ export const comparisonNodeSpecs = [
                     id: "a",
                     description: "First Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 },
@@ -3416,6 +3441,7 @@ export const comparisonNodeSpecs = [
                     id: "b",
                     description: "Second Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 }
@@ -3445,6 +3471,7 @@ export const comparisonNodeSpecs = [
                     id: "a",
                     description: "First Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 },
@@ -3452,6 +3479,7 @@ export const comparisonNodeSpecs = [
                     id: "b",
                     description: "Second Argument",
                     types: [
+                        "int",
                         "float"
                     ]
                 }
