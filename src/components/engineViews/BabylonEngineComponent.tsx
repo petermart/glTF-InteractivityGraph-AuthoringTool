@@ -254,7 +254,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
                 <label className="mx-3" style={{color: "white"}}>Choose file: </label>
                 <input className="d-none" type="file" accept=".glb, .gltf" ref={fileInputRef} onChange={() => setFileUploaded(true)}/>
                 <Button variant="outline-light" onClick={() => fileInputRef.current!.click()}>
-                    Upload gltf/glb
+                    Upload glb
                 </Button>
 
                 <Spacer width={16} height={0}/>
