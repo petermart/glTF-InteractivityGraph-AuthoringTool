@@ -17,6 +17,7 @@ export class Floor extends BehaveEngineNode {
         let val: any;
 
         switch (type) {
+            case "int":
             case "float":
                 val = Math.floor(a);
                 break;

@@ -18,6 +18,7 @@ export class AbsoluteValue extends BehaveEngineNode {
         let val: any;
 
         switch (type) {
+            case "int":
             case "float":
                 val = Math.abs(a);
                 break;

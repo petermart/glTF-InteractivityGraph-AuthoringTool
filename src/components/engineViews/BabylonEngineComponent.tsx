@@ -96,6 +96,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
         createScene();
 
         const file = fileInputRef.current!.files![0]
+        const fileExtension = "." + file.name.split('.').pop();
 
         const url = URL.createObjectURL(file);
 
@@ -105,7 +106,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
             }
         });
 
-        const container = await SceneLoader.LoadAssetContainerAsync("", url, sceneRef.current, undefined, ".glb");
+        const container = await SceneLoader.LoadAssetContainerAsync("", url, sceneRef.current, undefined, fileExtension);
         container.addAllToScene();
 
         return {nodes:buildGlTFNodeLayout(container.rootNodes[0]), animations: container.animationGroups};
@@ -138,7 +139,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
         rootNode.getChildren<TransformNode>().forEach((child: TransformNode) => traverse(child));
 
         finalNodes.sort((a, b) => a.metadata.nodeIndex - b.metadata.nodeIndex);
-        console.log(finalNodes);
+        // console.log(finalNodes);
         return finalNodes;
     }
 
@@ -251,7 +252,7 @@ export const BabylonEngineComponent = (props: {behaveGraphRef: any, setBehaveGra
                 <Spacer width={16} height={0}/>
 
                 <label className="mx-3" style={{color: "white"}}>Choose file: </label>
-                <input className="d-none" type="file" accept=".glb" ref={fileInputRef} onChange={() => setFileUploaded(true)}/>
+                <input className="d-none" type="file" accept=".glb, .gltf" ref={fileInputRef} onChange={() => setFileUploaded(true)}/>
                 <Button variant="outline-light" onClick={() => fileInputRef.current!.click()}>
                     Upload glb
                 </Button>

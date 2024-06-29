@@ -34,12 +34,10 @@ export class Multiply extends BehaveEngineNode {
                     a[2] * b,
                 ]
             }
-            else if ((typeA == 'float' || typeA == 'int') && (typeB == 'float' || typeB == 'int')) {
-                val = a * b;
-            }
         } else {
             switch (typeA) {
-                case "float":
+            case "int":
+            case "float":
                     val = a * b;
                     break;
                 case "float3":

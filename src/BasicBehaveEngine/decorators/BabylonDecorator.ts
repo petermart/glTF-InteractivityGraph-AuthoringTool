@@ -168,6 +168,21 @@ export class BabylonDecorator extends ADecorator {
         }, (path, value) => {
             // read only
         }, "float4x4");
+        this.registerJsonPointer(`scenes/0/activeCamera/sceneMatrix`, (path) => {
+            const parts: string[] = path.split("/");
+
+            // Get active camera position
+            const cameraPosition = (this.scene.activeCamera as any).position;
+            const activeCameraSceneMatrix = [
+                                            1.0, 0.0, 0.0, 0.0,
+                                            0.0, 1.0, 0.0, 0.0,
+                                            0.0, 0.0, 1.0, 0.0,
+                                            cameraPosition.x, cameraPosition.y, cameraPosition.z, 1.0
+                                        ];
+            return activeCameraSceneMatrix;
+        }, (path, value) => {
+            // read only
+        }, "float4x4");
     }
 
     public extractBehaveGraphFromScene = (): any => {
